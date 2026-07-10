@@ -68,7 +68,7 @@ function renderLocations(locations) {
   }).join("");
 }
 
-Papa.parse(SHEET_URL, {
+Papa.parse(`${SHEET_URL}&cacheBust=${Date.now()}`, {
   download: true,
   header: true,
   complete: function(results) {
