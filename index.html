@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ReMine Map</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+
+   <body>
+  <header>
+    <div class="logo">
+  <img src="images/remine-logo.png" alt="ReMine Louisiana logo">
+</div>
+
+    <nav>
+      <a href="#directory">ReMine Map</a>
+      <a href="#safety">Battery Safety</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Find recycling and battery drop-off options near you.</h1>
+      <p>
+        ReMine Map helps residents in Alexandria and Central Louisiana find existing
+        recycling and battery drop-off options.
+      </p>
+      <a class="button" href="#directory">Find a Drop-Off Location</a>
+      <a class="button secondary-button" href="https://docs.google.com/forms/d/e/1FAIpQLSeu4SF1wCQuP5I9OiNm9orPk1b4nBSCJZq0WD8VxPVYqtSs5Q/viewform?usp=header" target="_blank">
+  Submit an Update
+</a>
+    </section>
+
+    <section class="notice">
+  <strong>Disclaimer:</strong>
+  ReMine does not currently collect, store, transport, or recycle batteries directly.
+  This directory is provided for public information only. Always contact a listed
+  location before bringing batteries, electronics, or other materials.
+</section>
+
+    <section id="directory" class="section">
+      <div class="section-header">
+        <h2>Drop-Off Directory</h2>
+        <p>Search local battery, electronics, and recycling drop-off options.</p>
+      </div>
+
+      <div class="directory-layout">
+        <aside class="filters">
+         <input id="search-input" type="text" placeholder="Search by name, city, or material"> 
+
+          <label>
+            <input id="filter-batteries" type="checkbox">
+            Batteries
+          </label>
+
+          <label>
+            <input id="filter-lithium" type="checkbox">
+            Lithium-ion
+          </label>
+
+          <label>
+            <input id="filter-electronics" type="checkbox">
+            Electronics
+          </label>
+
+          <label>
+            <input id="filter-verified" type="checkbox">
+            Verified only
+          </label>
+
+            <label>
+            <input id="filter-call-first" type="checkbox">
+          Call before drop-off
+          </label>
+
+        </aside>
+
+        <div id="locations-list"></div>
+      </div>
+    </section>
+  <section id="safety" class="section info-section">
+  <h2>Battery Safety</h2>
+  <p>
+    Battery recycling can involve safety risks. Always contact a listed location
+    before bringing batteries or electronics.
+  </p>
+
+  <ul>
+    <li>Do not bring damaged, leaking, swollen, smoking, or hot batteries unless the location specifically accepts them.</li>
+    <li>Keep batteries away from heat, fire, water, children, and pets.</li>
+    <li>Keep loose batteries separated when possible.</li>
+    <li>Tape battery terminals when recommended, especially rechargeable, lithium-ion, button cell, and 9V batteries.</li>
+    <li>When unsure, call the drop-off location first.</li>
+  </ul>
+</section>
+
+<section id="about" class="section info-section">
+  <h2>About ReMine Map</h2>
+  <p>
+    ReMine Map is an early public tool by ReMine Louisiana. It helps residents
+    in Alexandria and Central Louisiana find existing recycling and battery
+    drop-off options.
+  </p>
+  <p>
+    ReMine is not currently collecting batteries directly. This website is part
+    of ReMine’s public education, access, and battery recovery planning work.
+  </p>
+</section>
+</main>
+
+<footer>
+  <p><strong>ReMine Louisiana</strong></p>
+  <p>
+    ReMine Map is a public information tool for Alexandria and Central Louisiana.
+    Always contact a location before bringing batteries, electronics, or other materials.
+  </p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="script.js"></script>
+</body>
