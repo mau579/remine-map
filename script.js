@@ -1,6 +1,69 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQocNSCaHskZYIBqPuWhdCwWa24Rr8ylmmOfFJnAFTgcH7utx4CgJ7xxphu6JrOpywSFk3vgxC9lRAh/pub?gid=0&single=true&output=csv";
 let allLocations = [];
 
+// Keeps the directory usable when index.html is opened directly from Finder.
+// The published sheet remains the primary source when the site is served online.
+const LOCAL_LOCATIONS = [
+  {
+    locationName: "Battery Warehouse", locationType: "Battery retailer / battery drop-off",
+    address: "3711 Mac Lee Dr", city: "Alexandria", state: "LA", zipCode: "71302",
+    phone: "(318) 448-1998", website: "https://batteryalexandria.usbatterydealers.com",
+    materialsAccepted: ["Batteries"], acceptsBatteries: "Yes",
+    acceptedBatteryTypes: ["Car batteries", "Lead-acid batteries", "NiCad batteries", "Rechargeable batteries", "Single-use batteries"],
+    acceptsLithiumIon: "Unknown", acceptsElectronics: "No", acceptedElectronics: [],
+    restrictions: "Call before drop-off. Confirm accepted battery types before visiting.",
+    hours: "Mon–Fri 7:30 AM–5:00 PM; Sat 8:00 AM–12:00 PM; Sun closed.", cost: "Unknown",
+    safetyInstructions: "Do not bring damaged, leaking, swollen, or hot batteries unless confirmed by the location.",
+    callBeforeDropoff: "Recommended", verificationStatus: "Pending", publicListing: "Yes"
+  },
+  {
+    locationName: "Xpress Recycling", locationType: "Recycling center / scrap metal recycler",
+    address: "1210 Dallas Ave", city: "Alexandria", state: "LA", zipCode: "71303",
+    phone: "(318) 619-8488", website: "https://www.xpressrecycling.com",
+    materialsAccepted: ["Aluminum beverage cans", "Ferrous metals", "Nonferrous metals", "Copper", "Brass", "Aluminum", "Lead", "Batteries"],
+    acceptsBatteries: "Yes", acceptedBatteryTypes: ["Call to confirm"], acceptsLithiumIon: "Unknown",
+    acceptsElectronics: "No", acceptedElectronics: [], restrictions: "Call before drop-off; accepted battery types are not specified.",
+    hours: "Mon–Fri 8:00 AM–4:00 PM; Sat–Sun closed.", cost: "Unknown",
+    safetyInstructions: "Call before bringing batteries.", callBeforeDropoff: "Recommended",
+    verificationStatus: "Pending", publicListing: "Yes"
+  },
+  {
+    locationName: "Goodwill", locationType: "Donation center / electronics donation",
+    address: "5216 Jackson Street", city: "Alexandria", state: "LA", zipCode: "71303",
+    phone: "(318) 445-2606", website: "https://goodwillnla.org",
+    materialsAccepted: ["Desktop computers", "LCD computer monitors", "Office machines", "Clothing", "Furniture", "Collectables"],
+    acceptsBatteries: "Unknown", acceptedBatteryTypes: ["Call to confirm"], acceptsLithiumIon: "Unknown",
+    acceptsElectronics: "Yes", acceptedElectronics: ["Desktop computers", "LCD computer monitors", "Office machines"],
+    restrictions: "Call before drop-off. Battery acceptance is unknown.", hours: "Open daily 10:00 AM–4:00 PM.", cost: "Unknown",
+    safetyInstructions: "Battery acceptance is unknown. Call before bringing batteries.", callBeforeDropoff: "Recommended",
+    verificationStatus: "Pending", publicListing: "Yes"
+  },
+  {
+    locationName: "Home Depot", locationType: "Retail drop-off",
+    address: "5000 Masonic Dr", city: "Alexandria", state: "LA", zipCode: "71301",
+    phone: "(318) 767-8988", website: "https://www.homedepot.com/l/Alexandria/LA/Alexandria/71301/374",
+    materialsAccepted: ["Car batteries", "Cell phones", "Compact fluorescent light bulbs", "Lead-acid batteries", "Rechargeable batteries"],
+    acceptsBatteries: "Yes", acceptedBatteryTypes: ["Car batteries", "Lead-acid batteries", "Rechargeable batteries"],
+    acceptsLithiumIon: "Unknown", acceptsElectronics: "Yes", acceptedElectronics: ["Cell phones"],
+    restrictions: "Call before drop-off. Confirm accepted types and instructions before visiting.",
+    hours: "Mon–Sat 6:00 AM–9:00 PM; Sun 8:00 AM–8:00 PM.", cost: "Unknown",
+    safetyInstructions: "Call before bringing batteries.", callBeforeDropoff: "Recommended",
+    verificationStatus: "Pending", publicListing: "Yes"
+  },
+  {
+    locationName: "Best Buy", locationType: "Retail electronics recycling / drop-off",
+    address: "2657 S MacArthur Dr", city: "Alexandria", state: "LA", zipCode: "71301",
+    phone: "(318) 427-7689", website: "https://stores.bestbuy.com/la/alexandria/2657-s-macarthur-dr-2507.html",
+    materialsAccepted: ["Electronics", "Computers", "Cell phones", "Cables", "Printers", "Televisions", "Batteries"],
+    acceptsBatteries: "Yes", acceptedBatteryTypes: ["NiCad batteries", "Rechargeable batteries"],
+    acceptsLithiumIon: "Unknown", acceptsElectronics: "Yes", acceptedElectronics: ["Computers", "Cell phones", "Printers", "Televisions"],
+    restrictions: "Call before drop-off. Confirm item limits and restrictions before visiting.",
+    hours: "Hours vary; call or check the website before visiting.", cost: "Unknown",
+    safetyInstructions: "Call before bringing batteries or electronics.", callBeforeDropoff: "Recommended",
+    verificationStatus: "Pending", publicListing: "Yes"
+  }
+];
+
 function renderLocations(locations) {
   const list = document.getElementById("locations-list");
 
@@ -100,8 +163,19 @@ Papa.parse(`${SHEET_URL}&cacheBust=${Date.now()}`, {
     });
 
     renderLocations(allLocations);
+  },
+  error: function() {
+    allLocations = LOCAL_LOCATIONS;
+    renderLocations(allLocations);
   }
 });
+
+// Browsers commonly block cross-origin spreadsheet requests on file:// pages.
+// Show the bundled directory immediately in that case.
+if (window.location.protocol === "file:") {
+  allLocations = LOCAL_LOCATIONS;
+  renderLocations(allLocations);
+}
 
 function applyFilters() {
   const searchTerm = document.getElementById("search-input").value.toLowerCase();
