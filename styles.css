@@ -6,15 +6,43 @@ body {
 }
 
 header {
-  background: white;
-  border-bottom: 1px solid #dbe3ef;
-  padding: 20px 32px;
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 1000;
+
+  padding: 10px 40px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0.82);
+
+  backdrop-filter: blur(14px);
+
+  -webkit-backdrop-filter: blur(14px);
+
+  border-bottom: 1px solid rgba(30, 70, 32, 0.12);
+
+  transition: padding 0.25s ease, background 0.25s ease;
+
 }
 
 .logo img {
-  display: block;
-  height: 76px;
+
+  height: 120px;
+
   width: auto;
+
+  display: block;
+
+  transition: height 0.25s ease, opacity 0.25s ease;
+
 }
 
 main {
@@ -66,23 +94,47 @@ nav {
 }
 
 nav a {
-  color: #071a33;
-  text-decoration: none;
+  color: #071A33;
   font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 nav a:hover {
-  color: #1e6bff;
+  color: #1E4620;
 }
+
+header.scrolled {
+  padding: 4px 40px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+header.scrolled .logo img {
+  height: 60px;
+  opacity: 0.92;
+}
+
 @media (max-width: 700px) {
   header {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 20px;
+  }
+
+  .logo img {
+    height: 86px;
   }
 
   nav {
     flex-wrap: wrap;
+    justify-content: flex-end;
     gap: 12px;
+  }
+
+  nav a {
+    font-size: 15px;
   }
 
   .hero {
@@ -120,10 +172,16 @@ nav a:hover {
   margin-top: 24px;
 }
 
-.filters,
+.filters {
+  background: #fffdf7;
+  border: 1px solid #eadfbe;
+  border-radius: 18px;
+  padding: 24px;
+}
+
 .location-card {
-  background: white;
-  border: 1px solid #dbe3ef;
+  background: #fffefa;
+  border: 1px solid #eee6cf;
   border-radius: 18px;
   padding: 24px;
 }
@@ -149,9 +207,11 @@ nav a:hover {
   gap: 8px;
   line-height: 1.2;
 }
+
 .filters input[type="checkbox"] {
   margin-top: 3px;
   flex-shrink: 0;
+  accent-color: #1E4620;
 }
 
 .badge {
@@ -260,20 +320,38 @@ nav a:hover {
 }
 
 footer {
-  margin-top: 48px;
-  padding: 32px;
-  background: #071a33;
+  max-width: 1000px;
+  width: calc(100% - 64px);
+  margin: 48px auto 0;
+  padding: 24px 28px;
+  background: rgba(7, 26, 51, 0.96);
   color: white;
+  border-radius: 22px;
+  border: 1px solid rgba(211, 188, 141, 0.35);
+  box-shadow: 0 18px 40px rgba(7, 26, 51, 0.12);
+  box-sizing: border-box;
+}
+
+.footer-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+footer h2 {
+  margin: 0 0 14px;
+  font-size: 28px;
 }
 
 footer p {
   max-width: 900px;
-  margin: 0 auto 10px;
+  margin: 0 0 10px;
   line-height: 1.5;
+  font-size: 18px;
 }
 
-footer p:last-child {
-  margin-bottom: 0;
+.footer-small {
+  color: #dbe3ef;
+  font-size: 15px;
 }
 
 .location-card {
@@ -313,16 +391,24 @@ footer p:last-child {
   }
 
   header {
-    padding: 18px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 20px;
   }
 
-  .logo {
-    font-size: 22px;
+  .logo img {
+    height: 92px;
+  }
+
+  header.scrolled .logo img {
+    height: 52px;
   }
 
   nav {
     width: 100%;
     justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 14px;
   }
 
   nav a {
@@ -344,13 +430,19 @@ footer p:last-child {
   }
 
   .secondary-button {
-    margin-left: 0;
+    margin-left: 0;ther
     margin-top: 10px;
   }
 
   .card-actions a {
     width: 100%;
     text-align: center;
+  }
+
+  footer {
+    width: calc(100% - 32px);
+    margin: 40px auto 0;
+    padding: 22px 20px;
   }
 }
 .card-footer {
