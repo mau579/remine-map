@@ -93,6 +93,8 @@ function renderLocations(locations) {
         ? `<p><strong>Battery types:</strong> ${location.acceptedBatteryTypes.join(", ")}</p>`
         : "";
 
+    const safetyMessage = location.safetyInstructions || location.restrictions;
+
     return `
       <div class="location-card">
 
@@ -111,7 +113,7 @@ function renderLocations(locations) {
         ${location.hours ? `<p><strong>Hours:</strong> ${location.hours}</p>` : ""}
         ${location.cost ? `<p><strong>Cost:</strong> ${location.cost}</p>` : ""}
 
-        ${location.safetyInstructions ? `<p class="warning">${location.safetyInstructions}</p>` : ""}
+        ${safetyMessage ? `<p class="warning">${safetyMessage}</p>` : ""}
 
         <div class="card-footer">
   <div class="card-actions">
