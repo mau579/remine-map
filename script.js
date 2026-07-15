@@ -108,7 +108,6 @@ function renderLocations(locations) {
     }
         ${batteryTypes}
 
-        ${location.restrictions ? `<p><strong>Restrictions:</strong> ${location.restrictions}</p>` : ""}
         ${location.hours ? `<p><strong>Hours:</strong> ${location.hours}</p>` : ""}
         ${location.cost ? `<p><strong>Cost:</strong> ${location.cost}</p>` : ""}
 
