@@ -93,7 +93,11 @@ function renderLocations(locations) {
         ? `<p><strong>Battery types:</strong> ${location.acceptedBatteryTypes.join(", ")}</p>`
         : "";
 
-    const safetyMessage = location.safetyInstructions || location.restrictions;
+    const isVerified = location.verificationStatus.trim().toLowerCase() === "verified";
+    const verificationMessage =
+      location.safetyInstructions ||
+      location.restrictions ||
+      "We have not confirmed this information directly with the business. Call before visiting.";
 
     return `
       <div class="location-card">
@@ -113,7 +117,7 @@ function renderLocations(locations) {
         ${location.hours ? `<p><strong>Hours:</strong> ${location.hours}</p>` : ""}
         ${location.cost ? `<p><strong>Cost:</strong> ${location.cost}</p>` : ""}
 
-        ${safetyMessage ? `<p class="warning">${safetyMessage}</p>` : ""}
+        ${!isVerified ? `<p class="warning">${verificationMessage}</p>` : ""}
 
         <div class="card-footer">
   <div class="card-actions">
