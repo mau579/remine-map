@@ -14,7 +14,7 @@ const LOCAL_LOCATIONS = [
     restrictions: "Call before drop-off. Confirm accepted battery types before visiting.",
     hours: "Mon–Fri 7:30 AM–5:00 PM; Sat 8:00 AM–12:00 PM; Sun closed.", cost: "Unknown",
     safetyInstructions: "Do not bring damaged, leaking, swollen, or hot batteries unless confirmed by the location.",
-    callBeforeDropoff: "Recommended", verificationStatus: "Pending", publicListing: "Yes"
+    callBeforeDropoff: "Recommended", verificationStatus: "Pending", logoFile: "battery-warehouse.png", publicListing: "Yes"
   },
   {
     locationName: "Xpress Recycling", locationType: "Recycling center / scrap metal recycler",
@@ -25,7 +25,7 @@ const LOCAL_LOCATIONS = [
     acceptsElectronics: "No", acceptedElectronics: [], restrictions: "Call before drop-off; accepted battery types are not specified.",
     hours: "Mon–Fri 8:00 AM–4:00 PM; Sat–Sun closed.", cost: "Unknown",
     safetyInstructions: "Call before bringing batteries.", callBeforeDropoff: "Recommended",
-    verificationStatus: "Pending", publicListing: "Yes"
+    verificationStatus: "Pending", logoFile: "xpress-recycling.png", publicListing: "Yes"
   },
   {
     locationName: "Goodwill", locationType: "Donation center / electronics donation",
@@ -36,7 +36,7 @@ const LOCAL_LOCATIONS = [
     acceptsElectronics: "Yes", acceptedElectronics: ["Desktop computers", "LCD computer monitors", "Office machines"],
     restrictions: "Call before drop-off. Battery acceptance is unknown.", hours: "Open daily 10:00 AM–4:00 PM.", cost: "Unknown",
     safetyInstructions: "Battery acceptance is unknown. Call before bringing batteries.", callBeforeDropoff: "Recommended",
-    verificationStatus: "Pending", publicListing: "Yes"
+    verificationStatus: "Pending", logoFile: "goodwill.png", publicListing: "Yes"
   },
   {
     locationName: "Home Depot", locationType: "Retail drop-off",
@@ -48,7 +48,7 @@ const LOCAL_LOCATIONS = [
     restrictions: "Call before drop-off. Confirm accepted types and instructions before visiting.",
     hours: "Mon–Sat 6:00 AM–9:00 PM; Sun 8:00 AM–8:00 PM.", cost: "Unknown",
     safetyInstructions: "Call before bringing batteries.", callBeforeDropoff: "Recommended",
-    verificationStatus: "Pending", publicListing: "Yes"
+    verificationStatus: "Pending", logoFile: "home-depot.png", publicListing: "Yes"
   },
   {
     locationName: "Best Buy", locationType: "Retail electronics recycling / drop-off",
@@ -60,7 +60,7 @@ const LOCAL_LOCATIONS = [
     restrictions: "Call before drop-off. Confirm item limits and restrictions before visiting.",
     hours: "Hours vary; call or check the website before visiting.", cost: "Unknown",
     safetyInstructions: "Call before bringing batteries or electronics.", callBeforeDropoff: "Recommended",
-    verificationStatus: "Pending", publicListing: "Yes"
+    verificationStatus: "Pending", logoFile: "best-buy.png", publicListing: "Yes"
   }
 ];
 
@@ -99,11 +99,23 @@ function renderLocations(locations) {
       location.restrictions ||
       "We have not confirmed this information directly with the business. Call before visiting.";
 
+    const logoFile = location.logoFile.trim();
+    const logoMarkup = logoFile
+      ? `<span class="location-logo-badge" aria-hidden="true">
+          <span class="location-logo-center">
+            <img src="images/logos/${encodeURIComponent(logoFile)}" alt="">
+          </span>
+        </span>`
+      : "";
+
     return `
       <div class="location-card">
 
 
-        <h3>${location.locationName}</h3>
+        <div class="location-heading">
+          ${logoMarkup}
+          <h3>${location.locationName}</h3>
+        </div>
         <p>${location.locationType}</p>
         <p>${fullAddress}</p>
 
@@ -162,6 +174,7 @@ Papa.parse(`${SHEET_URL}&cacheBust=${Date.now()}`, {
         safetyInstructions: row.safetyInstructions || "",
         callBeforeDropoff: row.callBeforeDropoff || "",
         verificationStatus: row.verificationStatus || "Pending",
+        logoFile: row.logoFile || "",
         notes: row.notes || "",
         publicListing: row.publicListing || "No"
       };
