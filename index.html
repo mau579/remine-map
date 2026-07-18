@@ -46,33 +46,41 @@
 
       <div class="directory-layout">
         <aside class="filters">
-         <input id="search-input" type="text" placeholder="Search by name, city, or material"> 
+          <input id="search-input" type="text" placeholder="Search by name, city, or material">
 
-          <label>
-            <input id="filter-batteries" type="checkbox">
-            Batteries
-          </label>
+          <div class="filter-group">
+            <p class="filter-group-label">Materials accepted</p>
 
-          <label>
-            <input id="filter-lithium" type="checkbox">
-            Lithium-ion
-          </label>
+            <label><input class="material-filter" type="checkbox" value="aluminum-cans">Aluminum cans</label>
+            <label><input class="material-filter" type="checkbox" value="brass">Brass</label>
+            <label><input class="material-filter" type="checkbox" value="compact-fluorescent-light-bulbs">Compact fluorescent light bulbs</label>
+            <label><input class="material-filter" type="checkbox" value="copper">Copper</label>
+            <label><input class="material-filter" type="checkbox" value="electronics">Electronics</label>
+            <label><input class="material-filter" type="checkbox" value="iron">Iron</label>
+            <label><input class="material-filter" type="checkbox" value="lead-acid-batteries">Lead-acid batteries</label>
+            <label><input class="material-filter" type="checkbox" value="lead-acid-batteries-non-automotive">Lead-acid batteries (non-automotive)</label>
+            <label><input class="material-filter" type="checkbox" value="metal-clothes-hangers">Metal clothes hangers</label>
+            <label><input class="material-filter" type="checkbox" value="nicad-batteries">NiCad batteries</label>
+            <label><input class="material-filter" type="checkbox" value="rechargeable-batteries">Rechargeable batteries</label>
+            <label><input class="material-filter" type="checkbox" value="steel-cans">Steel cans</label>
+            <label><input class="material-filter" type="checkbox" value="tin-cans">Tin cans</label>
+            <label><input class="material-filter" type="checkbox" value="used-motor-oil">Used motor oil</label>
+            <label><input class="material-filter" type="checkbox" value="vehicle-donation">Vehicle donation</label>
+          </div>
 
-          <label>
-            <input id="filter-electronics" type="checkbox">
-            Electronics
-          </label>
-
-          <label>
-            <input id="filter-verified" type="checkbox">
-            Verified only
-          </label>
+          <div class="filter-group listing-filter-group">
+            <p class="filter-group-label">Listing filters</p>
 
             <label>
-            <input id="filter-call-first" type="checkbox">
-          Call before drop-off
-          </label>
+              <input id="filter-verified" type="checkbox">
+              Verified only
+            </label>
 
+            <label>
+              <input id="filter-call-first" type="checkbox">
+              Call before drop-off
+            </label>
+          </div>
         </aside>
 
         <div id="locations-list"></div>
