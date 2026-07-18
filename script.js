@@ -1,6 +1,55 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQocNSCaHskZYIBqPuWhdCwWa24Rr8ylmmOfFJnAFTgcH7utx4CgJ7xxphu6JrOpywSFk3vgxC9lRAh/pub?gid=0&single=true&output=csv";
 let allLocations = [];
 
+const MATERIAL_ALIASES = {
+  "aluminum-cans": ["aluminum cans", "aluminum beverage cans"],
+  brass: ["brass"],
+  "compact-fluorescent-light-bulbs": ["compact fluorescent light bulbs", "compact fluorescent bulbs", "cfl", "cfls"],
+  copper: ["copper"],
+  electronics: ["electronics", "electronic equipment"],
+  iron: ["iron", "ferrous metals", "ferrous metals iron"],
+  "lead-acid-batteries": ["lead acid batteries"],
+  "lead-acid-batteries-non-automotive": ["lead acid batteries non automotive", "non automotive lead acid batteries"],
+  "metal-clothes-hangers": ["metal clothes hangers", "metal clothing hangers"],
+  "nicad-batteries": ["nicad", "ni cad", "nicad batteries", "ni cad batteries"],
+  "rechargeable-batteries": ["rechargeable batteries"],
+  "steel-cans": ["steel cans", "tin or steel cans"],
+  "tin-cans": ["tin cans", "tin or steel cans"],
+  "used-motor-oil": ["used motor oil", "motor oil"],
+  "vehicle-donation": ["vehicle donation", "vehicle donations"]
+};
+
+function normalizeMaterialText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function includesMaterialPhrase(text, phrase) {
+  const normalizedText = ` ${normalizeMaterialText(text)} `;
+  const normalizedPhrase = ` ${normalizeMaterialText(phrase)} `;
+  return normalizedText.includes(normalizedPhrase);
+}
+
+function matchesMaterialCategory(location, category) {
+  if (category === "electronics" && location.acceptsElectronics.toLowerCase() === "yes") {
+    return true;
+  }
+
+  const materialValues = [
+    ...location.materialsAccepted,
+    ...location.acceptedBatteryTypes,
+    ...location.acceptedElectronics,
+    location.notes
+  ];
+
+  return (MATERIAL_ALIASES[category] || []).some(alias =>
+    materialValues.some(value => includesMaterialPhrase(value, alias))
+  );
+}
+
 // Keeps the directory usable when index.html is opened directly from Finder.
 // The published sheet remains the primary source when the site is served online.
 const LOCAL_LOCATIONS = [
@@ -198,9 +247,8 @@ if (window.location.protocol === "file:") {
 function applyFilters() {
   const searchTerm = document.getElementById("search-input").value.toLowerCase();
 
-  const batteriesChecked = document.getElementById("filter-batteries").checked;
-  const lithiumChecked = document.getElementById("filter-lithium").checked;
-  const electronicsChecked = document.getElementById("filter-electronics").checked;
+  const selectedMaterials = Array.from(document.querySelectorAll(".material-filter:checked"))
+    .map(input => input.value);
   const verifiedChecked = document.getElementById("filter-verified").checked;
   const callFirstChecked = document.getElementById("filter-call-first").checked;
 
@@ -210,15 +258,16 @@ function applyFilters() {
       location.city.toLowerCase().includes(searchTerm) ||
       location.materialsAccepted.join(" ").toLowerCase().includes(searchTerm) ||
       location.acceptedBatteryTypes.join(" ").toLowerCase().includes(searchTerm) ||
+      location.acceptedElectronics.join(" ").toLowerCase().includes(searchTerm) ||
       location.acceptsBatteries.toLowerCase().includes(searchTerm) ||
       location.acceptsLithiumIon.toLowerCase().includes(searchTerm) ||
       location.acceptsElectronics.toLowerCase().includes(searchTerm) ||
       (searchTerm === "battery" && location.acceptsBatteries === "Yes") ||
       (searchTerm === "batteries" && location.acceptsBatteries === "Yes");
 
-    const matchesBatteries = !batteriesChecked || location.acceptsBatteries === "Yes";
-    const matchesLithium = !lithiumChecked || location.acceptsLithiumIon === "Yes";
-    const matchesElectronics = !electronicsChecked || location.acceptsElectronics === "Yes";
+    const matchesSelectedMaterials =
+      selectedMaterials.length === 0 ||
+      selectedMaterials.some(category => matchesMaterialCategory(location, category));
     const matchesVerified = !verifiedChecked || location.verificationStatus === "Verified";
 
     const matchesCallFirst =
@@ -227,16 +276,16 @@ function applyFilters() {
       location.callBeforeDropoff === "Recommended" ||
       location.callBeforeDropoff === "Required";
 
-    return matchesSearch && matchesBatteries && matchesLithium && matchesElectronics && matchesVerified && matchesCallFirst;
+    return matchesSearch && matchesSelectedMaterials && matchesVerified && matchesCallFirst;
   });
 
   renderLocations(filteredLocations);
 }
 
 document.getElementById("search-input").addEventListener("input", applyFilters);
-document.getElementById("filter-batteries").addEventListener("change", applyFilters);
-document.getElementById("filter-lithium").addEventListener("change", applyFilters);
-document.getElementById("filter-electronics").addEventListener("change", applyFilters);
+document.querySelectorAll(".material-filter").forEach(input => {
+  input.addEventListener("change", applyFilters);
+});
 document.getElementById("filter-verified").addEventListener("change", applyFilters);
 document.getElementById("filter-call-first").addEventListener("change", applyFilters);
 
