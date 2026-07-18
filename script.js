@@ -1,5 +1,10 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQocNSCaHskZYIBqPuWhdCwWa24Rr8ylmmOfFJnAFTgcH7utx4CgJ7xxphu6JrOpywSFk3vgxC9lRAh/pub?gid=0&single=true&output=csv";
 let allLocations = [];
+let activePublicLocations = [];
+let locationsMap = null;
+let markerLayer = null;
+
+const ALEXANDRIA_CENTER = [31.3113, -92.4451];
 
 const MATERIAL_ALIASES = {
   "aluminum-cans": ["aluminum cans", "aluminum beverage cans"],
@@ -49,6 +54,143 @@ function matchesMaterialCategory(location, category) {
   return (MATERIAL_ALIASES[category] || []).some(alias =>
     materialValues.some(value => includesMaterialPhrase(value, alias))
   );
+}
+
+function escapeHTML(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function getLocationId(location) {
+  const locationKey = `${location.locationName}-${location.address}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+  return `location-${locationKey || "listing"}`;
+}
+
+function hasValidCoordinates(location) {
+  return Number.isFinite(location.latitude) &&
+    Number.isFinite(location.longitude) &&
+    location.latitude >= -90 &&
+    location.latitude <= 90 &&
+    location.longitude >= -180 &&
+    location.longitude <= 180;
+}
+
+function getMapPopup(location) {
+  const fullAddress = [location.address, location.city, location.state, location.zipCode]
+    .filter(Boolean)
+    .join(", ");
+  const materials = location.materialsAccepted.length > 0
+    ? location.materialsAccepted.join(", ")
+    : location.acceptedBatteryTypes.join(", ") || "Call to confirm";
+  const isVerified = location.verificationStatus.trim().toLowerCase() === "verified";
+
+  return `
+    <div class="map-popup">
+      <h3>${escapeHTML(location.locationName)}</h3>
+      <p>${escapeHTML(fullAddress)}</p>
+      <p><strong>Materials:</strong> ${escapeHTML(materials)}</p>
+      <p class="map-popup-status ${isVerified ? "is-verified" : "is-unconfirmed"}">
+        ${escapeHTML(location.verificationStatus)}
+      </p>
+      <a class="map-popup-link" href="#${getLocationId(location)}" data-listing-id="${getLocationId(location)}">
+        View full listing
+      </a>
+    </div>
+  `;
+}
+
+function initializeMap() {
+  if (locationsMap || typeof L === "undefined") {
+    return;
+  }
+
+  locationsMap = L.map("locations-map", {
+    center: ALEXANDRIA_CENTER,
+    zoom: 11,
+    scrollWheelZoom: false
+  });
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19
+  }).addTo(locationsMap);
+
+  markerLayer = L.layerGroup().addTo(locationsMap);
+}
+
+function updateMapSummary(locations) {
+  const summary = document.getElementById("map-summary");
+  const mappedCount = locations.filter(hasValidCoordinates).length;
+  const omittedCount = locations.length - mappedCount;
+
+  if (locations.length === 0) {
+    summary.textContent = "No locations match the current search and filters.";
+  } else if (mappedCount === 0) {
+    summary.textContent = "No matching listings have map coordinates yet. All listings remain available in List View.";
+  } else if (omittedCount > 0) {
+    summary.textContent = `${mappedCount} mapped ${mappedCount === 1 ? "location" : "locations"}. ${omittedCount} additional ${omittedCount === 1 ? "listing is" : "listings are"} available in List View.`;
+  } else {
+    summary.textContent = `${mappedCount} ${mappedCount === 1 ? "location" : "locations"} shown on the map.`;
+  }
+}
+
+function renderMapMarkers(locations) {
+  updateMapSummary(locations);
+
+  if (!locationsMap || !markerLayer) {
+    return;
+  }
+
+  markerLayer.clearLayers();
+  const mappedLocations = locations.filter(hasValidCoordinates);
+  const bounds = [];
+  const markerIcon = L.divIcon({
+    className: "remine-marker-shell",
+    html: '<span class="remine-map-marker"><span></span></span>',
+    iconSize: [34, 42],
+    iconAnchor: [17, 42],
+    popupAnchor: [0, -38]
+  });
+
+  mappedLocations.forEach(location => {
+    const coordinates = [location.latitude, location.longitude];
+    L.marker(coordinates, { icon: markerIcon, title: location.locationName })
+      .bindPopup(getMapPopup(location), { maxWidth: 300 })
+      .addTo(markerLayer);
+    bounds.push(coordinates);
+  });
+
+  if (bounds.length === 1) {
+    locationsMap.setView(bounds[0], 14);
+  } else if (bounds.length > 1) {
+    locationsMap.fitBounds(bounds, { padding: [42, 42], maxZoom: 14 });
+  } else {
+    locationsMap.setView(ALEXANDRIA_CENTER, 11);
+  }
+}
+
+function setDirectoryView(view) {
+  const showMap = view === "map";
+  document.getElementById("list-view").hidden = showMap;
+  document.getElementById("map-view").hidden = !showMap;
+  document.getElementById("list-view-button").classList.toggle("is-active", !showMap);
+  document.getElementById("map-view-button").classList.toggle("is-active", showMap);
+  document.getElementById("list-view-button").setAttribute("aria-pressed", String(!showMap));
+  document.getElementById("map-view-button").setAttribute("aria-pressed", String(showMap));
+
+  if (showMap) {
+    initializeMap();
+    renderMapMarkers(activePublicLocations);
+    window.setTimeout(() => locationsMap?.invalidateSize(), 0);
+  }
 }
 
 // Keeps the directory usable when index.html is opened directly from Finder.
@@ -121,9 +263,12 @@ function renderLocations(locations) {
     return location.publicListing === "Yes";
   });
 
+  activePublicLocations = publicLocations;
+  renderMapMarkers(publicLocations);
+
   if (publicLocations.length === 0) {
     list.innerHTML = `
-      <div class="location-card">
+      <div class="location-card empty-location-card">
         <h3>No matching locations found.</h3>
         <p>Try changing your search or filters.</p>
       </div>
@@ -159,7 +304,7 @@ function renderLocations(locations) {
       : "";
 
     return `
-      <div class="location-card">
+      <div class="location-card" id="${getLocationId(location)}">
 
 
         <div class="location-heading">
@@ -226,7 +371,9 @@ Papa.parse(`${SHEET_URL}&cacheBust=${Date.now()}`, {
         verificationStatus: row.verificationStatus || "Pending",
         logoFile: row.logoFile || "",
         notes: row.notes || "",
-        publicListing: row.publicListing || "No"
+        publicListing: row.publicListing || "No",
+        latitude: Number.parseFloat(row.latitude),
+        longitude: Number.parseFloat(row.longitude)
       };
     });
 
@@ -289,6 +436,22 @@ document.querySelectorAll(".material-filter").forEach(input => {
 });
 document.getElementById("filter-verified").addEventListener("change", applyFilters);
 document.getElementById("filter-call-first").addEventListener("change", applyFilters);
+document.getElementById("list-view-button").addEventListener("click", () => setDirectoryView("list"));
+document.getElementById("map-view-button").addEventListener("click", () => setDirectoryView("map"));
+document.getElementById("locations-map").addEventListener("click", event => {
+  const listingLink = event.target.closest(".map-popup-link");
+
+  if (!listingLink) {
+    return;
+  }
+
+  event.preventDefault();
+  const listingId = listingLink.dataset.listingId;
+  setDirectoryView("list");
+  window.requestAnimationFrame(() => {
+    document.getElementById(listingId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
 
 window.addEventListener("scroll", () => {
   const header = document.querySelector("header");

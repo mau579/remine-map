@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReMine Map</title>
-    <link rel="stylesheet" href="styles.css?v=20260718-2">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynhKqS8/KEVhH7HI2A1b2yUW4Q=" crossorigin="">
+    <link rel="stylesheet" href="styles.css?v=20260718-3">
   </head>
 
    <body>
@@ -84,7 +85,25 @@
           </div>
         </aside>
 
-        <div id="locations-list"></div>
+        <div class="directory-results">
+          <div class="view-toggle" role="group" aria-label="Directory view">
+            <button class="view-toggle-button is-active" id="list-view-button" type="button" aria-pressed="true">
+              List View
+            </button>
+            <button class="view-toggle-button" id="map-view-button" type="button" aria-pressed="false">
+              Map View
+            </button>
+          </div>
+
+          <div id="list-view" class="directory-view">
+            <div id="locations-list"></div>
+          </div>
+
+          <div id="map-view" class="directory-view" hidden>
+            <p id="map-summary" class="map-summary" aria-live="polite"></p>
+            <div id="locations-map" aria-label="Map of recycling and drop-off locations"></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -162,5 +181,6 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="script.js?v=20260718-2"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="script.js?v=20260718-3"></script>
 </body>
