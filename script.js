@@ -7,6 +7,7 @@ const MATERIAL_ALIASES = {
   "compact-fluorescent-light-bulbs": ["compact fluorescent light bulbs", "compact fluorescent bulbs", "cfl", "cfls"],
   copper: ["copper"],
   electronics: ["electronics", "electronic equipment"],
+  glass: ["glass", "glass bottles", "glass and bottles", "bottles and glass"],
   iron: ["iron", "ferrous metals", "ferrous metals iron"],
   "lead-acid-batteries": ["lead acid batteries"],
   "lead-acid-batteries-non-automotive": ["lead acid batteries non automotive", "non automotive lead acid batteries"],
