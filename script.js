@@ -65,6 +65,14 @@ function escapeHTML(value) {
     .replace(/'/g, "&#039;");
 }
 
+function parseCoordinate(value) {
+  const normalizedValue = String(value || "")
+    .trim()
+    .replace(",", ".");
+
+  return Number.parseFloat(normalizedValue);
+}
+
 function getLocationId(location) {
   const locationKey = `${location.locationName}-${location.address}`
     .toLowerCase()
@@ -372,8 +380,8 @@ Papa.parse(`${SHEET_URL}&cacheBust=${Date.now()}`, {
         logoFile: row.logoFile || "",
         notes: row.notes || "",
         publicListing: row.publicListing || "No",
-        latitude: Number.parseFloat(row.latitude),
-        longitude: Number.parseFloat(row.longitude)
+        latitude: parseCoordinate(row.latitude),
+        longitude: parseCoordinate(row.longitude)
       };
     });
 
