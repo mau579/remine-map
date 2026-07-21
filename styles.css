@@ -956,6 +956,7 @@ input:focus-visible {
 .epr-hero-copy > p:not(.epr-eyebrow) {
   color: #d8e3de;
   font-size: 20px;
+  font-weight: 600;
   line-height: 1.55;
   margin: 0 0 10px;
   max-width: 720px;
@@ -1025,7 +1026,7 @@ input:focus-visible {
 
 .epr-section {
   border: 1px solid #dbe3ef;
-  padding: 46px;
+  padding: 40px;
 }
 
 .epr-section-cream {
@@ -1075,8 +1076,9 @@ input:focus-visible {
 
 .epr-section-heading > p:last-child {
   color: #4a5568;
-  font-size: 19px;
-  line-height: 1.55;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.48;
   margin: 0;
 }
 
@@ -1090,9 +1092,9 @@ input:focus-visible {
 
 .epr-card-grid {
   display: grid;
-  gap: 16px;
+  gap: 14px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 30px;
+  margin-top: 24px;
   position: relative;
   z-index: 1;
 }
@@ -1101,7 +1103,7 @@ input:focus-visible {
   background: white;
   border: 1px solid #eadfbe;
   border-radius: 18px;
-  padding: 25px;
+  padding: 21px;
 }
 
 .epr-number {
@@ -1119,14 +1121,17 @@ input:focus-visible {
 
 .epr-number-card h3 {
   color: #071a33;
-  font-size: 21px;
+  font-size: 22px;
+  font-weight: 800;
   line-height: 1.2;
-  margin: 20px 0 10px;
+  margin: 15px 0 7px;
 }
 
 .epr-number-card p {
   color: #4a5568;
-  line-height: 1.55;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.45;
   margin: 0;
 }
 
@@ -1237,7 +1242,7 @@ input:focus-visible {
   background: #fffdf7;
   border: 1px solid #eadfbe;
   border-radius: 18px;
-  padding: 26px;
+  padding: 22px;
 }
 
 .epr-balance-help {
@@ -1253,6 +1258,8 @@ input:focus-visible {
 
 .epr-balance-card ul {
   color: #4a5568;
+  font-size: 17px;
+  font-weight: 600;
   line-height: 1.5;
   margin: 0;
   padding-left: 21px;
@@ -1265,6 +1272,8 @@ input:focus-visible {
 .epr-context-note,
 .epr-info-note {
   border-radius: 15px;
+  font-size: 17px;
+  font-weight: 600;
   line-height: 1.5;
   margin: 18px 0 0;
   padding: 18px 20px;
@@ -1328,8 +1337,9 @@ input:focus-visible {
 
 .epr-closing-card > p:not(.epr-eyebrow) {
   color: #dbe3ef;
-  font-size: 19px;
-  line-height: 1.55;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.48;
   margin: 0;
   max-width: 780px;
   position: relative;
@@ -1427,12 +1437,12 @@ input:focus-visible {
   .epr-hero-copy > p:not(.epr-eyebrow),
   .epr-section-heading > p:last-child,
   .epr-closing-card > p:not(.epr-eyebrow) {
-    font-size: 17px;
+    font-size: 18px;
   }
 
   .epr-section,
   .epr-closing-card {
-    padding: 30px 22px;
+    padding: 26px 20px;
   }
 
   .epr-section-heading h2,
@@ -1442,7 +1452,14 @@ input:focus-visible {
 
   .epr-number-card,
   .epr-balance-card {
-    padding: 22px;
+    padding: 18px;
+  }
+
+  .epr-number-card p,
+  .epr-balance-card ul,
+  .epr-context-note,
+  .epr-info-note {
+    font-size: 17px;
   }
 
   .epr-button {
