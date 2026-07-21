@@ -906,9 +906,7 @@ input:focus-visible {
   align-items: center;
   background: #0b2b20;
   color: white;
-  display: grid;
-  gap: 36px;
-  grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.55fr);
+  display: block;
   min-height: 520px;
   overflow: hidden;
   padding: 56px;
@@ -988,9 +986,15 @@ input:focus-visible {
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
-  max-width: 310px;
-  position: relative;
-  width: 100%;
+  max-width: none;
+  opacity: 0.66;
+  pointer-events: none;
+  position: absolute;
+  right: -95px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 420px;
+  z-index: 0;
 }
 
 .epr-orbit {
@@ -1369,13 +1373,19 @@ input:focus-visible {
 
 @media (max-width: 900px) {
   .epr-hero {
-    grid-template-columns: minmax(0, 1fr) 220px;
     padding: 44px;
+  }
+
+  .epr-hero-mark {
+    opacity: 0.48;
+    right: -130px;
+    width: 340px;
   }
 
   .epr-card-grid {
     grid-template-columns: 1fr;
   }
+
 }
 
 @media (max-width: 700px) {
