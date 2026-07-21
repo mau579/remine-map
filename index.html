@@ -4,20 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReMine Map</title>
+    <link rel="icon" type="image/png" href="images/remine-logo.png">
     <link rel="stylesheet" href="leaflet.css?v=1.9.4">
-    <link rel="stylesheet" href="styles.css?v=20260718-3">
+    <link rel="stylesheet" href="styles.css?v=20260721-2">
   </head>
 
    <body>
   <header>
     <div class="logo">
-  <img src="images/remine-logo.png" alt="ReMine Louisiana logo">
-</div>
+      <a href="index.html" aria-label="ReMine Louisiana home">
+        <img src="images/remine-logo.png" alt="ReMine Louisiana logo">
+      </a>
+    </div>
 
-    <nav>
-      <a href="#directory">ReMine Map</a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="nav-active" href="index.html#directory" aria-current="page">ReMine Map</a>
       <a href="#prepare">Prepare</a>
       <a href="#safety">Battery Safety</a>
+      <a href="epr.html">EPR Explained</a>
       <a href="#about">About</a>
     </nav>
   </header>
@@ -182,5 +186,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="script.js?v=20260719-1"></script>
+<script src="script.js?v=20260721-1"></script>
 </body>
