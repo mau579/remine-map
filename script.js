@@ -461,6 +461,39 @@ document.getElementById("locations-map").addEventListener("click", event => {
   });
 });
 
+const siteNavigationLinks = [...document.querySelectorAll(".site-nav a")];
+const sectionNavigationHashes = new Set(["#prepare", "#safety", "#about"]);
+
+function updateActiveNavigation() {
+  const currentHash = sectionNavigationHashes.has(window.location.hash)
+    ? window.location.hash
+    : "#directory";
+
+  siteNavigationLinks.forEach(link => {
+    const linkUrl = new URL(link.href, window.location.href);
+    const isActive =
+      linkUrl.pathname === window.location.pathname &&
+      linkUrl.hash === currentHash;
+
+    link.classList.toggle("nav-active", isActive);
+
+    if (isActive) {
+      link.setAttribute("aria-current", currentHash === "#directory" ? "page" : "location");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+}
+
+siteNavigationLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    window.requestAnimationFrame(updateActiveNavigation);
+  });
+});
+
+window.addEventListener("hashchange", updateActiveNavigation);
+updateActiveNavigation();
+
 window.addEventListener("scroll", () => {
   const header = document.querySelector("header");
 
