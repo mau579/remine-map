@@ -601,6 +601,8 @@ header.scrolled .logo img {
 }
 .notice {
   margin-top: 24px;
+  box-sizing: border-box;
+  max-width: 982px;
   background: #f7f6f1;
   border: 1px solid #d3bc8d;
   color: #1f2933;
