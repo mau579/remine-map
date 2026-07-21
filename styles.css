@@ -1169,7 +1169,8 @@ input:focus-visible {
 .epr-item-grid {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
+  max-width: 880px;
 }
 
 .epr-item-grid li {
@@ -1183,10 +1184,6 @@ input:focus-visible {
   gap: 13px;
   line-height: 1.4;
   padding: 15px 17px;
-}
-
-.epr-item-grid li:last-child {
-  grid-column: 1 / -1;
 }
 
 .epr-item-grid li span {
@@ -1244,42 +1241,61 @@ input:focus-visible {
   width: 23px;
 }
 
-.epr-balance-grid {
+.epr-framework-groups {
+  border-bottom: 1px solid #dbe3ef;
+  border-top: 1px solid #dbe3ef;
   display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   margin-top: 30px;
 }
 
-.epr-balance-card {
-  background: #fffdf7;
-  border: 1px solid #eadfbe;
-  border-radius: 18px;
-  padding: 22px;
+.epr-framework-group {
+  padding: 24px 28px 24px 0;
 }
 
-.epr-balance-help {
-  background: #edf3e8;
-  border-color: #bfd2b5;
+.epr-framework-group + .epr-framework-group {
+  border-left: 1px solid #dbe3ef;
+  padding-left: 28px;
+  padding-right: 0;
 }
 
-.epr-balance-card h3 {
+.epr-framework-group h3 {
   color: #071a33;
   font-size: 22px;
-  margin: 0 0 15px;
+  margin: 0 0 16px;
 }
 
-.epr-balance-card ul {
+.epr-framework-list {
   color: #4a5568;
+  display: grid;
   font-size: 17px;
   font-weight: 600;
+  gap: 11px 18px;
+  grid-template-columns: 1fr;
   line-height: 1.5;
   margin: 0;
-  padding-left: 21px;
+  padding: 0;
+  list-style: none;
 }
 
-.epr-balance-card li {
-  margin-bottom: 8px;
+.epr-framework-list-wide {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.epr-framework-list li {
+  padding-left: 20px;
+  position: relative;
+}
+
+.epr-framework-list li::before {
+  background: #2e6f40;
+  border-radius: 50%;
+  content: "";
+  height: 8px;
+  left: 0;
+  position: absolute;
+  top: 0.55em;
+  width: 8px;
 }
 
 .epr-context-note,
@@ -1407,14 +1423,24 @@ input:focus-visible {
     display: none;
   }
 
-  .epr-item-grid,
   .epr-check-list,
-  .epr-balance-grid {
+  .epr-framework-groups {
     grid-template-columns: 1fr;
   }
 
-  .epr-item-grid li:last-child {
-    grid-column: auto;
+  .epr-framework-group {
+    padding: 22px 0;
+  }
+
+  .epr-framework-group + .epr-framework-group {
+    border-left: 0;
+    border-top: 1px solid #dbe3ef;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .epr-framework-list-wide {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1469,13 +1495,12 @@ input:focus-visible {
     font-size: 33px;
   }
 
-  .epr-number-card,
-  .epr-balance-card {
+  .epr-number-card {
     padding: 18px;
   }
 
   .epr-number-card p,
-  .epr-balance-card ul,
+  .epr-framework-list,
   .epr-context-note,
   .epr-info-note {
     font-size: 17px;
