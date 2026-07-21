@@ -987,13 +987,13 @@ input:focus-visible {
   display: flex;
   justify-content: center;
   max-width: none;
-  opacity: 0.66;
+  opacity: 0.52;
   pointer-events: none;
   position: absolute;
-  right: -95px;
+  right: -55px;
   top: 50%;
   transform: translateY(-50%);
-  width: 420px;
+  width: 480px;
   z-index: 0;
 }
 
@@ -1377,9 +1377,9 @@ input:focus-visible {
   }
 
   .epr-hero-mark {
-    opacity: 0.48;
-    right: -130px;
-    width: 340px;
+    opacity: 0.38;
+    right: -90px;
+    width: 380px;
   }
 
   .epr-card-grid {
