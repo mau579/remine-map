@@ -464,6 +464,10 @@ document.getElementById("locations-map").addEventListener("click", event => {
 const siteNavigationLinks = [...document.querySelectorAll(".site-nav a")];
 const sectionNavigationHashes = new Set(["#prepare", "#safety", "#about"]);
 
+function normalizeNavigationPath(pathname) {
+  return pathname.replace(/index\.html$/, "");
+}
+
 function updateActiveNavigation() {
   const currentHash = sectionNavigationHashes.has(window.location.hash)
     ? window.location.hash
@@ -472,7 +476,7 @@ function updateActiveNavigation() {
   siteNavigationLinks.forEach(link => {
     const linkUrl = new URL(link.href, window.location.href);
     const isActive =
-      linkUrl.pathname === window.location.pathname &&
+      normalizeNavigationPath(linkUrl.pathname) === normalizeNavigationPath(window.location.pathname) &&
       linkUrl.hash === currentHash;
 
     link.classList.toggle("nav-active", isActive);
