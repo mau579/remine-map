@@ -8,21 +8,33 @@ const ALEXANDRIA_CENTER = [31.3113, -92.4451];
 
 const MATERIAL_ALIASES = {
   "aluminum-cans": ["aluminum cans", "aluminum beverage cans"],
+  "aluminum-foil": ["aluminum foil", "aluminium foil"],
+  "aluminum-trays": ["aluminum trays", "aluminum tray", "aluminium trays", "aluminium tray"],
+  appliances: ["appliances", "appliance", "household appliances", "large appliances", "small appliances"],
+  "bbq-pits": ["bbq pits", "bbq pit", "barbecue pits", "barbecue pit", "bbq grills", "barbecue grills"],
+  "beer-cans": ["beer cans", "beer can", "aluminum beverage cans", "aluminum cans"],
   brass: ["brass"],
   "compact-fluorescent-light-bulbs": ["compact fluorescent light bulbs", "compact fluorescent bulbs", "cfl", "cfls"],
   copper: ["copper"],
   electronics: ["electronics", "electronic equipment"],
+  "energy-drink-cans": ["energy drink cans", "energy drink can", "aluminum beverage cans", "aluminum cans"],
+  faucets: ["faucets", "faucet"],
+  "floor-lamps": ["floor lamps", "floor lamp"],
   glass: ["glass", "glass bottles", "glass and bottles", "bottles and glass"],
   iron: ["iron", "ferrous metals", "ferrous metals iron"],
+  keys: ["keys", "key"],
   "lead-acid-batteries": ["lead acid batteries"],
   "lead-acid-batteries-non-automotive": ["lead acid batteries non automotive", "non automotive lead acid batteries"],
   "metal-clothes-hangers": ["metal clothes hangers", "metal clothing hangers"],
+  nails: ["nails", "nail"],
   "nicad-batteries": ["nicad", "ni cad", "nicad batteries", "ni cad batteries"],
   "rechargeable-batteries": ["rechargeable batteries"],
+  screws: ["screws", "screw"],
   "steel-cans": ["steel cans", "tin or steel cans"],
   "tin-cans": ["tin cans", "tin or steel cans"],
   "used-motor-oil": ["used motor oil", "motor oil"],
-  "vehicle-donation": ["vehicle donation", "vehicle donations"]
+  "vehicle-donation": ["vehicle donation", "vehicle donations"],
+  wiring: ["wiring", "wire", "wires", "electrical wiring", "electrical wire", "copper wiring", "copper wire"]
 };
 
 function normalizeMaterialText(value) {
