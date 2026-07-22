@@ -1558,12 +1558,12 @@ header::after {
 
 .site-nav {
   align-items: center;
-  background: rgba(255, 255, 255, 0.66);
-  border: 1px solid rgba(30, 70, 32, 0.1);
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(7, 26, 51, 0.055);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
   gap: 4px;
-  padding: 5px;
+  padding: 0;
 }
 
 .site-nav a {
@@ -1820,11 +1820,11 @@ header.scrolled {
   }
 
   .site-nav {
-    background: rgba(255, 255, 255, 0.72);
-    border-radius: 14px;
+    background: transparent;
+    border-radius: 0;
     gap: 4px;
     justify-content: center;
-    padding: 5px;
+    padding: 0;
   }
 
   .site-nav a {
