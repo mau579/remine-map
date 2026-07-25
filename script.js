@@ -361,6 +361,18 @@ function renderLocations(locations) {
       </div>
     `;
   }).join("");
+
+  list.querySelectorAll(".location-logo-badge img").forEach(image => {
+    const hideBrokenLogo = () => {
+      image.closest(".location-logo-badge")?.remove();
+    };
+
+    image.addEventListener("error", hideBrokenLogo, { once: true });
+
+    if (image.complete && image.naturalWidth === 0) {
+      hideBrokenLogo();
+    }
+  });
 }
 
 Papa.parse(`${SHEET_URL}&cacheBust=${Date.now()}`, {
